@@ -51,7 +51,7 @@ export const LoginPage = () => {
             <div className="absolute inset-0 z-0">
                 <div
                     className="h-full w-full bg-cover bg-center"
-                    style={{ backgroundImage: 'url("/assets/hero-bg.jpg")' }}
+                    style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDZrqMoZvTs5MD5vuZWpWkN2mvL8ogdXCiRWHWlSrn2Wuxe2CQOSveokZoKtN9ynkonWvbrv6l3RqNz5u-pPF63nRGrvUFfEF1MWqn5zrpP63c3rjlWw9DBjMh9Nv3uSOsB9JjL0T5SpKWd8nX16ji56LP_sSKBFiO7nTH5qLulFEPl7ts5uur_iAoHdEd5qMRsQp6vh7QJAyqW15F-GqQOngZa3POemr3NMD11ZuojfJsNqDnLG69ZHmD3XpDZnYh54zttqLImeg")' }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-background-light dark:to-background-dark"></div>
             </div>
