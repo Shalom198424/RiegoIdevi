@@ -6,7 +6,6 @@ import {
     Phone,
     Mail,
     MapPin,
-    Maximize,
     Droplets,
     Sprout,
     Hash,

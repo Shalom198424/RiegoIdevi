@@ -7,7 +7,6 @@ import {
     Maximize,
     Droplets,
     Sprout,
-    Hash,
     BadgeCheck,
     Calendar,
     Settings,
