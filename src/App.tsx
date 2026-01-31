@@ -8,6 +8,7 @@ import { AdminPage } from './pages/Admin/AdminPage';
 import { AdminHistoryPage } from './pages/Admin/AdminHistoryPage';
 import { AdminNetworkPage } from './pages/Admin/AdminNetworkPage';
 import { AdminSettingsPage } from './pages/Admin/AdminSettingsPage';
+import { AdminProfilePage } from './pages/Admin/AdminProfilePage';
 import { ProfilePage } from './pages/Profile/ProfilePage';
 import { RequestIrrigationPage } from './pages/Producer/RequestIrrigationPage';
 
@@ -39,7 +40,7 @@ function App() {
           <Route path="history" element={<AdminHistoryPage />} />
           <Route path="network" element={<AdminNetworkPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
-          <Route path="profile" element={<ProfilePage />} />
+          <Route path="profile" element={<AdminProfilePage />} />
         </Route>
 
         {/* Fallback */}

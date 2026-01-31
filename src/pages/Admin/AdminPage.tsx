@@ -42,8 +42,6 @@ export const AdminPage = () => {
         window.dispatchEvent(new Event('storage'));
     };
 
-
-
     const handleApproveDDJJC = (id: string) => {
         const updated = ddjjcs.map(d => d.id === id ? { ...d, status: 'APPROVED' } : d);
         localStorage.setItem('ddjjc_submissions', JSON.stringify(updated));
@@ -57,6 +55,15 @@ export const AdminPage = () => {
     const handleDownloadPDF = (ddjjc: any) => {
         generateDDJJCPdf(ddjjc);
     };
+
+    const totalScheduledVolume = irrigationRequests
+        .filter(r => r.status === 'APPROVED')
+        .reduce((acc, curr) => {
+            // Formula: Flow (L/s) * Duration (h) * 3600 (s/h) / 1000 (L/m3) = m3
+            const flow = parseFloat(curr.flow || "0");
+            const duration = parseFloat(curr.duration || "0");
+            return acc + ((flow * duration * 3600) / 1000);
+        }, 0);
 
     return (
         <div className="max-w-lg mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
@@ -275,6 +282,26 @@ export const AdminPage = () => {
                                 <span className="text-[11px] font-black text-slate-400 dark:text-gray-500 tracking-tighter">{d.time}</span>
                             </div>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Total Scheduled Volume Card */}
+            <section className="space-y-4">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-800 rounded-[2.5rem] p-8 shadow-xl shadow-blue-500/20 text-white relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                    <div className="relative z-10 flex items-center gap-6">
+                        <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20 shadow-lg">
+                            <Droplets size={32} className="text-white" strokeWidth={2.5} />
+                        </div>
+                        <div>
+                            <p className="text-blue-100 font-bold uppercase tracking-widest text-xs mb-1">Total Volumen Programado</p>
+                            <h3 className="text-4xl font-black tracking-tight">{totalScheduledVolume.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} m³</h3>
+                            <div className="flex items-center gap-2 mt-2 text-blue-100/80 text-sm font-medium">
+                                <CheckCircle size={14} />
+                                <span>Calculado sobre {irrigationRequests.filter(r => r.status === 'APPROVED').length} turnos aprobados</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

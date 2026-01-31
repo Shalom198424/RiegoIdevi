@@ -112,7 +112,12 @@ export const DashboardLayout = () => {
                             {isAdmin ? (
                                 <>
                                     <span className="text-[10px] font-black text-[#19b366] uppercase tracking-widest leading-none mb-0.5">ADMINISTRADOR</span>
-                                    <h2 className="text-sm font-bold text-slate-800 dark:text-white leading-tight">Emanuel Vela</h2>
+                                    <Link
+                                        to="/admin/profile"
+                                        className="text-sm font-bold text-slate-800 dark:text-white leading-tight hover:text-primary transition-colors cursor-pointer"
+                                    >
+                                        Emanuel Vela
+                                    </Link>
                                 </>
                             ) : (
                                 <>

@@ -11,16 +11,22 @@ import {
     BadgeCheck,
     Calendar,
     Settings,
-    ArrowLeft
+    ArrowLeft,
+    Home,
+    Waves,
+    LayoutGrid,
+    CircleDot,
+    FileText
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 
 export const ProfilePage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const userName = localStorage.getItem('userName') || 'Productor';
     const userRole = localStorage.getItem('userRole') || 'PRODUCER';
-    const isAdmin = userRole === 'ADMIN';
+    const isAdmin = userRole === 'ADMIN' || location.pathname.startsWith('/admin');
 
     const stats = [
         { label: 'Hectáreas', value: '12.5', icon: Maximize, color: 'text-blue-500' },
@@ -57,12 +63,14 @@ export const ProfilePage = () => {
                             <h1 className="text-3xl font-black text-slate-800 dark:text-white tracking-tight uppercase">{userName}</h1>
                         </div>
 
-                        <div className="flex gap-3">
-                            <button className="h-12 px-6 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-white font-bold rounded-2xl hover:bg-slate-200 dark:hover:bg-white/10 transition-all flex items-center gap-2">
-                                <Settings size={18} />
-                                <span className="hidden sm:inline">Configurar</span>
-                            </button>
-                        </div>
+                        {!isAdmin && (
+                            <div className="flex gap-3">
+                                <button className="h-12 px-6 bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-white font-bold rounded-2xl hover:bg-slate-200 dark:hover:bg-white/10 transition-all flex items-center gap-2">
+                                    <Settings size={18} />
+                                    <span className="hidden sm:inline">Configurar</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -85,7 +93,10 @@ export const ProfilePage = () => {
                 )}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className={cn(
+                "grid grid-cols-1 gap-8",
+                !isAdmin && "lg:grid-cols-2"
+            )}>
                 {/* Personal Information */}
                 <section className="bg-white dark:bg-black p-8 rounded-[32px] border border-slate-100 dark:border-white/10 shadow-xl shadow-black/5">
                     <h3 className="text-lg font-black text-slate-800 dark:text-white mb-6 uppercase tracking-widest flex items-center gap-3">
@@ -113,9 +124,13 @@ export const ProfilePage = () => {
                         </h3>
 
                         <div className="space-y-6">
-                            <InfoItem icon={MapPin} label="Ubicación" value="Lote 14 - Sector Noreste" />
-                            <InfoItem icon={Hash} label="Derecho de Agua" value="PAD-2024-081" />
-                            <InfoItem icon={Droplets} label="Método de Riego" value="Goteo Tecnificado" />
+                            <InfoItem icon={Home} label="Nombre de Chacra/Establecimiento" value="Los Frutales I" />
+                            <InfoItem icon={MapPin} label="Zona/Seccion" value="Zona 1 - Sección C" />
+                            <InfoItem icon={Waves} label="Canal de Servicio" value="Canal Principal" />
+                            <InfoItem icon={LayoutGrid} label="Parcela" value="14B" />
+                            <InfoItem icon={CircleDot} label="Toma" value="Toma 3" />
+                            <InfoItem icon={Droplets} label="Superficie Regable" value="12.5 Has" />
+                            <InfoItem icon={FileText} label="Superficie Catastral" value="15.0 Has" />
                         </div>
                     </section>
                 )}
