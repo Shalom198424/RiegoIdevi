@@ -34,7 +34,7 @@ export const ProducerPage = () => {
                     {/* Header Image Part */}
                     <div className="relative h-52 w-full overflow-hidden">
                         <img
-                            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop"
+                            src="https://i.imgur.com/vfQARdW.jpeg"
                             alt="Field"
                             className="w-full h-full object-cover"
                         />
