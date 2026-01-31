@@ -9,6 +9,7 @@ import { AdminHistoryPage } from './pages/Admin/AdminHistoryPage';
 import { AdminNetworkPage } from './pages/Admin/AdminNetworkPage';
 import { AdminSettingsPage } from './pages/Admin/AdminSettingsPage';
 import { AdminProfilePage } from './pages/Admin/AdminProfilePage';
+import { AdminDDJJCPage } from './pages/Admin/AdminDDJJCPage';
 import { ProfilePage } from './pages/Profile/ProfilePage';
 import { RequestIrrigationPage } from './pages/Producer/RequestIrrigationPage';
 
@@ -39,6 +40,7 @@ function App() {
           <Route index element={<AdminPage />} />
           <Route path="history" element={<AdminHistoryPage />} />
           <Route path="network" element={<AdminNetworkPage />} />
+          <Route path="ddjjc" element={<AdminDDJJCPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
           <Route path="profile" element={<AdminProfilePage />} />
         </Route>

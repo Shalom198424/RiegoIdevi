@@ -33,6 +33,7 @@ export const DashboardLayout = () => {
 
     const adminLinks = [
         { label: 'Panel Solicitudes', icon: LayoutDashboard, href: '/admin' },
+        { label: 'Gestión DDJJC', icon: ClipboardCheck, href: '/admin/ddjjc' },
         { label: 'Historial Consumo', icon: History, href: '/admin/history' },
         { label: 'Gestión Red', icon: Droplets, href: '/admin/network' },
         { label: 'Configuración', icon: Settings, href: '/admin/settings' },
@@ -159,6 +160,7 @@ export const DashboardLayout = () => {
                 {(isAdmin
                     ? [
                         { label: 'PANEL', icon: LayoutDashboard, path: '/admin', active: location.pathname === '/admin' },
+                        { label: 'DDJJC', icon: ClipboardCheck, path: '/admin/ddjjc', active: location.pathname === '/admin/ddjjc' },
                         { label: 'HISTORIAL', icon: History, path: '/admin/history', active: location.pathname === '/admin/history' },
                         { label: 'TURNOS', icon: Calendar, path: '/admin/schedule', active: location.pathname === '/admin/schedule' },
                         { label: 'AJUSTES', icon: Settings, path: '/admin/settings', active: location.pathname === '/admin/settings' }
