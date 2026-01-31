@@ -58,11 +58,8 @@ export const DashboardLayout = () => {
         <div className="min-h-screen bg-slate-50 dark:bg-black flex">
             {/* Sidebar Desktop */}
             <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 shadow-sm">
-                <div className="p-6 border-b border-slate-100 flex items-center gap-3">
-                    <div className="bg-primary-600 p-2 rounded-lg">
-                        <Droplets className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="font-bold text-xl text-slate-800">RiegoIdevi</span>
+                <div className="p-4 border-b border-slate-100 flex items-center justify-center">
+                    <img src="/assets/logo-idevi.jpg" alt="IDEVI Logo" className="h-16 w-auto object-contain" />
                 </div>
 
                 <nav className="flex-1 p-4 space-y-1">
@@ -198,11 +195,8 @@ export const DashboardLayout = () => {
                         onClick={e => e.stopPropagation()}
                     >
                         <div className="flex items-center justify-between mb-8">
-                            <div className="flex items-center gap-3">
-                                <div className="bg-primary-600 p-2 rounded-lg">
-                                    <Droplets className="w-5 h-5 text-white" />
-                                </div>
-                                <span className="font-bold text-xl">RiegoIdevi</span>
+                            <div className="flex items-center justify-center">
+                                <img src="/assets/logo-idevi.jpg" alt="IDEVI Logo" className="h-14 w-auto object-contain" />
                             </div>
                             <button
                                 className="p-2 hover:bg-slate-100 rounded-lg"
