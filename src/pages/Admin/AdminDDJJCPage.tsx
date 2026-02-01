@@ -12,25 +12,8 @@ import {
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
-interface CropEntry {
-    lote: string;
-    superficieTotal: string;
-    superficieParcial: string;
-    cultivo: string;
-    desde: string;
-    hasta: string;
-}
-
-interface DDJJCSubmission {
-    id: string;
-    producer: string;
-    period: string;
-    crops: CropEntry[];
-    timestamp: string;
-    status: 'PENDING' | 'APPROVED' | 'REJECTED';
-    plot: string;
-    canal: string;
-}
+import { dataService } from '../../services/dataService';
+import type { DDJJCSubmission } from '../../types';
 
 export const AdminDDJJCPage = () => {
     const [submissions, setSubmissions] = useState<DDJJCSubmission[]>([]);
@@ -40,8 +23,7 @@ export const AdminDDJJCPage = () => {
 
     useEffect(() => {
         const loadSubmissions = () => {
-            const data = JSON.parse(localStorage.getItem('ddjjc_submissions') || '[]');
-            setSubmissions(data);
+            setSubmissions(dataService.getDDJJCSubmissions());
         };
         loadSubmissions();
         window.addEventListener('storage', loadSubmissions);
@@ -56,12 +38,7 @@ export const AdminDDJJCPage = () => {
     });
 
     const updateStatus = (id: string, status: 'APPROVED' | 'REJECTED' | 'PENDING') => {
-        const updated = submissions.map(sub =>
-            sub.id === id ? { ...sub, status } : sub
-        );
-        localStorage.setItem('ddjjc_submissions', JSON.stringify(updated));
-        setSubmissions(updated);
-        window.dispatchEvent(new Event('storage'));
+        dataService.updateDDJJCStatus(id, status);
         if (selectedSubmission?.id === id) {
             setSelectedSubmission({ ...selectedSubmission, status });
         }

@@ -15,25 +15,21 @@ import {
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
+import { dataService } from '../../services/dataService';
+
 export const AdminNetworkPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterZone, setFilterZone] = useState('Todas');
 
+    const statsData = dataService.getNetworkStats();
     const networkStats = [
-        { label: 'Caudal Entrante', value: '1.45 m³/s', icon: Droplets, color: 'text-blue-500', trend: 'Estable' },
-        { label: 'Puntos de Control', value: '24 / 24', icon: MapPin, color: 'text-primary', trend: '+2 Online' },
-        { label: 'Consumo Actual', value: '0.88 m³/s', icon: Activity, color: 'text-indigo-500', trend: '+5% vs Ayer' },
-        { label: 'Eficiencia', value: '96.4%', icon: Zap, color: 'text-amber-500', trend: '+1.2%' },
+        { label: 'Caudal Entrante', value: statsData.totalFlow, icon: Droplets, color: 'text-blue-500', trend: 'Estable' },
+        { label: 'Puntos de Control', value: statsData.activePoints, icon: MapPin, color: 'text-primary', trend: '+2 Online' },
+        { label: 'Consumo Actual', value: statsData.currentConsumption, icon: Activity, color: 'text-indigo-500', trend: '+5% vs Ayer' },
+        { label: 'Eficiencia', value: statsData.efficiency, icon: Zap, color: 'text-amber-500', trend: '+1.2%' },
     ];
 
-    const infrastructure = [
-        { id: '1', name: 'Bocatoma Principal', type: 'Entrada', zone: 'Norte', status: '1.45m³/s', health: 'good', pressure: '4.2 bar' },
-        { id: '2', name: 'Canal Matriz Sur', type: 'Canal', zone: 'Sur', status: '0.92m³/s', health: 'good', pressure: '1.8 bar' },
-        { id: '3', name: 'Compuerta Lote 14', type: 'Control', zone: 'Sect. A', status: '0.12m³/s', health: 'warning', pressure: '0.5 bar' },
-        { id: '4', name: 'Estación de Bombeo 2', type: 'Bomba', zone: 'Oeste', status: '0.45m³/s', health: 'good', pressure: '6.5 bar' },
-        { id: '5', name: 'Compuerta Central', type: 'Control', zone: 'Centro', status: 'Inactivo', health: 'idle', pressure: '0.0 bar' },
-        { id: '6', name: 'Canal Derivador B', type: 'Canal', zone: 'Sect. B', status: '0.22m³/s', health: 'good', pressure: '1.2 bar' },
-    ];
+    const infrastructure = dataService.getNetworkInfrastructure();
 
     const alerts = [
         { id: 'a1', type: 'maintenance', title: 'Mantenimiento preventivo', description: 'Limpieza de filtros en Sector B mañana a las 08:00', icon: Wrench, color: 'text-amber-500' },
