@@ -1,10 +1,28 @@
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
-import { Droplets, LayoutDashboard, History, LogOut, Menu, X, Settings, User, Calendar, Sun, Moon, ClipboardCheck } from 'lucide-react';
+import {
+    Droplets,
+    LayoutDashboard,
+    History,
+    LogOut,
+    Menu,
+    X,
+    Settings,
+    User,
+    Calendar,
+    Sun,
+    Moon,
+    ClipboardCheck,
+    Bell
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '../../utils/cn';
+import { dataService } from '../../services/dataService';
+import type { AppNotification } from '../../types';
 
 export const DashboardLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+    const [notifications, setNotifications] = useState<AppNotification[]>([]);
     const [isDark, setIsDark] = useState(() => {
         const stored = localStorage.getItem('theme');
         if (stored) return stored === 'dark';
@@ -41,19 +59,22 @@ export const DashboardLayout = () => {
 
     const links = isAdmin ? adminLinks : producerLinks;
 
-    const [notificationCount, setNotificationCount] = useState(2);
-
     useEffect(() => {
         const updateNotifications = () => {
-            const ddjjcs = JSON.parse(localStorage.getItem('ddjjc_submissions') || '[]');
-            const pending = ddjjcs.filter((d: any) => d.status === 'PENDING').length;
-            setNotificationCount(2 + pending); // Mantener las 2 fijas + las nuevas DDJJC
+            setNotifications(dataService.getAppNotifications());
         };
 
         updateNotifications();
         window.addEventListener('storage', updateNotifications);
         return () => window.removeEventListener('storage', updateNotifications);
     }, []);
+
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+
+    const handleMarkAllRead = () => {
+        dataService.markAllAppNotificationsAsRead();
+        setIsNotificationsOpen(false);
+    };
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-black flex">
@@ -138,14 +159,83 @@ export const DashboardLayout = () => {
                         >
                             {isDark ? <Sun size={20} strokeWidth={2.5} /> : <Moon size={20} strokeWidth={2.5} />}
                         </button>
-                        <button className="relative p-2.5 bg-slate-50 dark:bg-white/5 rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-all group">
-                            {notificationCount > 0 && (
-                                <div className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white dark:border-background-dark animate-bounce-short">
-                                    {notificationCount}
-                                </div>
+
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                                className="relative p-2.5 bg-slate-50 dark:bg-white/5 rounded-full text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 transition-all group"
+                            >
+                                {unreadCount > 0 && (
+                                    <div className="absolute top-1 right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-black flex items-center justify-center rounded-full border-2 border-white dark:border-background-dark animate-bounce-short">
+                                        {unreadCount}
+                                    </div>
+                                )}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-12 transition-transform"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
+                            </button>
+
+                            {/* Notifications Dropdown */}
+                            {isNotificationsOpen && (
+                                <>
+                                    <div className="fixed inset-0 z-40" onClick={() => setIsNotificationsOpen(false)} />
+                                    <div className="absolute right-0 mt-4 w-80 md:w-96 bg-white dark:bg-[#121212] rounded-[2rem] shadow-2xl border border-slate-100 dark:border-white/10 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                                        <div className="p-6 border-b border-slate-100 dark:border-white/5 flex justify-between items-center bg-slate-50/50 dark:bg-white/5">
+                                            <h3 className="font-black text-slate-900 dark:text-white text-lg">Notificaciones</h3>
+                                            <button
+                                                onClick={handleMarkAllRead}
+                                                className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline"
+                                            >
+                                                Marcar todo leído
+                                            </button>
+                                        </div>
+                                        <div className="max-h-[70vh] overflow-y-auto overflow-x-hidden">
+                                            {notifications.length === 0 ? (
+                                                <div className="p-12 text-center">
+                                                    <div className="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-4">
+                                                        <History className="text-slate-300" size={32} />
+                                                    </div>
+                                                    <p className="text-slate-400 font-bold text-sm">No hay notificaciones</p>
+                                                </div>
+                                            ) : (
+                                                <div className="divide-y divide-slate-50 dark:divide-white/5">
+                                                    {notifications.map((n) => (
+                                                        <div
+                                                            key={n.id}
+                                                            className={cn(
+                                                                "p-5 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-pointer flex gap-4 items-start",
+                                                                !n.isRead && "bg-primary/5 dark:bg-primary/5"
+                                                            )}
+                                                            onClick={() => {
+                                                                if (n.link) navigate(n.link);
+                                                                setIsNotificationsOpen(false);
+                                                            }}
+                                                        >
+                                                            <div className={cn(
+                                                                "w-10 h-10 rounded-2xl flex items-center justify-center shrink-0",
+                                                                n.type === 'SUCCESS' ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400" :
+                                                                    n.type === 'ALERT' ? "bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-400" :
+                                                                        "bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400"
+                                                            )}>
+                                                                {n.type === 'SUCCESS' ? <ClipboardCheck size={20} /> : <Bell size={20} />}
+                                                            </div>
+                                                            <div className="space-y-1 pr-4">
+                                                                <p className="font-black text-slate-900 dark:text-white text-sm leading-tight">{n.title}</p>
+                                                                <p className="text-xs text-slate-500 dark:text-gray-400 font-medium line-clamp-2">{n.message}</p>
+                                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest pt-1">
+                                                                    {new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                                </p>
+                                                            </div>
+                                                            {!n.isRead && (
+                                                                <div className="w-2 h-2 bg-primary rounded-full shrink-0 mt-1.5" />
+                                                            )}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </>
                             )}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover:rotate-12 transition-transform"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></svg>
-                        </button>
+                        </div>
                     </div>
                 </header>
 
@@ -156,7 +246,7 @@ export const DashboardLayout = () => {
             </main>
 
             {/* Bottom Navigation (Mobile Only) */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-background-dark/95 backdrop-blur-xl border-t border-slate-100 dark:border-white/10 px-6 py-3 flex justify-between items-center z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-black border-t border-slate-100 dark:border-white/10 px-6 py-3 flex justify-between items-center z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
                 {(isAdmin
                     ? [
                         { label: 'PANEL', icon: LayoutDashboard, path: '/admin', active: location.pathname === '/admin' },

@@ -40,6 +40,7 @@ export interface IrrigationRequest {
     parcelName: string;
     date: string;
     duration: number; // in hours
+    flow: number; // in L/s
     status: RequestStatus;
     timestamp: string;
 }
@@ -55,6 +56,20 @@ export interface NetworkPoint {
     status: string; // e.g., "1.45m³/s"
     health: PointHealth;
     pressure: string;
+}
+
+// Notifications
+export type NotificationType = 'SUCCESS' | 'WARNING' | 'INFO' | 'ALERT';
+
+export interface AppNotification {
+    id: string;
+    userId: string;
+    title: string;
+    message: string;
+    type: NotificationType;
+    isRead: boolean;
+    timestamp: string;
+    link?: string;
 }
 
 // Stats & Metrics

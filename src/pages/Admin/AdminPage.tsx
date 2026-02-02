@@ -14,20 +14,18 @@ import {
     Download
 } from 'lucide-react';
 import { generateDDJJCPdf } from '../../utils/DDJJCPdfGenerator';
+import { dataService } from '../../services/dataService';
+import type { DDJJCSubmission, IrrigationRequest } from '../../types';
 
 export const AdminPage = () => {
-
-    const [ddjjcs, setDdjjcs] = useState<any[]>([]);
-    const [selectedDDJJC, setSelectedDDJJC] = useState<any | null>(null);
-    const [irrigationRequests, setIrrigationRequests] = useState<any[]>([]);
+    const [ddjjcs, setDdjjcs] = useState<DDJJCSubmission[]>([]);
+    const [selectedDDJJC, setSelectedDDJJC] = useState<DDJJCSubmission | null>(null);
+    const [irrigationRequests, setIrrigationRequests] = useState<IrrigationRequest[]>([]);
 
     useEffect(() => {
         const loadData = () => {
-            const data = JSON.parse(localStorage.getItem('ddjjc_submissions') || '[]');
-            setDdjjcs(data);
-
-            const requests = JSON.parse(localStorage.getItem('irrigation_requests') || '[]');
-            setIrrigationRequests(requests);
+            setDdjjcs(dataService.getDDJJCSubmissions());
+            setIrrigationRequests(dataService.getIrrigationRequests());
         };
 
         loadData();
@@ -36,23 +34,17 @@ export const AdminPage = () => {
     }, []);
 
     const handleApproveRequest = (id: string) => {
-        const updated = irrigationRequests.map(r => r.id === id ? { ...r, status: 'APPROVED' } : r);
-        localStorage.setItem('irrigation_requests', JSON.stringify(updated));
-        setIrrigationRequests(updated);
-        window.dispatchEvent(new Event('storage'));
+        dataService.updateIrrigationStatus(id, 'APPROVED');
     };
 
     const handleApproveDDJJC = (id: string) => {
-        const updated = ddjjcs.map(d => d.id === id ? { ...d, status: 'APPROVED' } : d);
-        localStorage.setItem('ddjjc_submissions', JSON.stringify(updated));
-        setDdjjcs(updated);
-        window.dispatchEvent(new Event('storage'));
+        dataService.updateDDJJCStatus(id, 'APPROVED');
         if (selectedDDJJC && selectedDDJJC.id === id) {
             setSelectedDDJJC(null);
         }
     };
 
-    const handleDownloadPDF = (ddjjc: any) => {
+    const handleDownloadPDF = (ddjjc: DDJJCSubmission) => {
         generateDDJJCPdf(ddjjc);
     };
 
@@ -60,15 +52,13 @@ export const AdminPage = () => {
         .filter(r => r.status === 'APPROVED')
         .reduce((acc, curr) => {
             // Formula: Flow (L/s) * Duration (h) * 3600 (s/h) / 1000 (L/m3) = m3
-            const flow = parseFloat(curr.flow || "0");
-            const duration = parseFloat(curr.duration || "0");
-            return acc + ((flow * duration * 3600) / 1000);
+            return acc + ((curr.flow * curr.duration * 3600) / 1000);
         }, 0);
 
     return (
         <div className="max-w-lg mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
             {/* DDJJC Recent Submissions */}
-            {ddjjcs.length > 0 && (
+            {ddjjcs.filter(d => d.status === 'PENDING').length > 0 && (
                 <section className="space-y-4">
                     <div className="flex justify-between items-center px-1">
                         <div className="flex items-center gap-3">
@@ -157,7 +147,6 @@ export const AdminPage = () => {
                             </div>
 
                             <div className="space-y-6">
-                                {/* Info Grid */}
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="p-4 bg-slate-50 dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/5">
                                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Productor</label>
@@ -177,7 +166,6 @@ export const AdminPage = () => {
                                     </div>
                                 </div>
 
-                                {/* Crop Table Preview */}
                                 <div>
                                     <h4 className="text-sm font-black text-slate-900 dark:text-white mb-3 uppercase tracking-wide">Cultivos Declarados</h4>
                                     <div className="overflow-hidden rounded-2xl border border-slate-100 dark:border-white/5">
@@ -190,7 +178,7 @@ export const AdminPage = () => {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-slate-100 dark:divide-white/5">
-                                                {selectedDDJJC.crops.map((crop: any, i: number) => (
+                                                {selectedDDJJC.crops.map((crop, i) => (
                                                     <tr key={i} className="bg-white dark:bg-[#1a1a1a]">
                                                         <td className="px-4 py-3 font-bold text-slate-700 dark:text-gray-300">{crop.cultivo}</td>
                                                         <td className="px-4 py-3 font-medium text-slate-600 dark:text-gray-400">{crop.superficieTotal}</td>
@@ -257,9 +245,7 @@ export const AdminPage = () => {
                         </div>
                     </div>
 
-                    {/* High-End Chart */}
                     <div className="h-44 flex items-end justify-between px-2 gap-4 relative">
-                        {/* Grid Lines */}
                         <div className="absolute inset-0 flex flex-col justify-between py-1 opacity-5 pointer-events-none">
                             <div className="border-t border-slate-400 w-full" />
                             <div className="border-t border-slate-400 w-full" />
@@ -274,9 +260,7 @@ export const AdminPage = () => {
                         ].map((d, i) => (
                             <div key={i} className="flex-1 flex flex-col items-center gap-4 h-full justify-end">
                                 <div className="w-full flex items-end gap-1.5 h-full">
-                                    {/* Supply Bar */}
                                     <div className="flex-1 bg-[#3b82f6] rounded-t-lg transition-all shadow-[0_-4px_12px_rgba(59,130,246,0.3)]" style={{ height: `${d.supply}%` }} />
-                                    {/* Demand Bar */}
                                     <div className="flex-1 bg-[#19b366] rounded-t-lg transition-all shadow-[0_-4px_12px_rgba(25,179,102,0.3)]" style={{ height: `${d.demand}%` }} />
                                 </div>
                                 <span className="text-[11px] font-black text-slate-400 dark:text-gray-500 tracking-tighter">{d.time}</span>
@@ -316,15 +300,14 @@ export const AdminPage = () => {
                 </div>
 
                 <div className="space-y-6 pb-20">
-                    {irrigationRequests.length === 0 && (
-                        <div className="text-center py-10 text-slate-400">
+                    {irrigationRequests.filter(r => r.status === 'PENDING').length === 0 && (
+                        <div className="text-center py-10 text-slate-400 font-bold text-sm bg-white dark:bg-white/5 rounded-[2rem] border border-dashed border-slate-200 dark:border-white/10">
                             No hay solicitudes pendientes.
                         </div>
                     )}
 
                     {irrigationRequests.filter(r => r.status === 'PENDING').map((req) => (
                         <div key={req.id} className="bg-white dark:bg-[#080808] rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-white/5 shadow-xl shadow-slate-200/50 dark:shadow-none transition-all group">
-                            {/* Visual Header */}
                             <div className="relative h-32 w-full bg-slate-100 dark:bg-white/5 overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-100 dark:from-white/10 dark:to-white/5" />
                                 <div className="absolute top-5 left-5 flex gap-2">
@@ -335,7 +318,7 @@ export const AdminPage = () => {
 
                             <div className="p-7 space-y-6">
                                 <div>
-                                    <h4 className="text-[#131614] dark:text-white text-xl font-black leading-tight tracking-tight">{req.parcelName} • {req.producer}</h4>
+                                    <h4 className="text-[#131614] dark:text-white text-xl font-black leading-tight tracking-tight">{req.parcelName} • {req.producerId}</h4>
                                     <div className="space-y-2 mt-4">
                                         <div className="flex items-center gap-3">
                                             <Droplets size={18} className="text-[#19b366]" />
