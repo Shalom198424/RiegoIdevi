@@ -24,7 +24,7 @@ export const ProducerPage = () => {
     }, []);
 
     return (
-        <div className="max-w-md mx-auto space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="max-w-xl mx-auto space-y-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
             {/* Live Activity Section */}
             <section className="space-y-5">
@@ -118,8 +118,8 @@ export const ProducerPage = () => {
                         <div key={req.id} className="bg-white dark:bg-[#080808] p-5 rounded-[2rem] border border-slate-100 dark:border-white/5 shadow-sm flex items-center justify-between group hover:border-[#4ade80]/30 transition-all cursor-pointer">
                             <div className="flex items-center gap-5">
                                 <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all ${req.status === 'APPROVED'
-                                        ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'
-                                        : 'bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-500'
+                                    ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'
+                                    : 'bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-500'
                                     }`}>
                                     {req.parcelId === "1" ? <Tractor size={32} /> : <Sprout size={32} />}
                                 </div>
@@ -131,8 +131,8 @@ export const ProducerPage = () => {
                                 </div>
                             </div>
                             <div className={`px-4 py-2 border rounded-full text-[10px] font-black uppercase tracking-[0.1em] ${req.status === 'APPROVED'
-                                    ? 'border-[#4ade80]/30 text-[#4ade80]'
-                                    : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-gray-400'
+                                ? 'border-[#4ade80]/30 text-[#4ade80]'
+                                : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-gray-400'
                                 }`}>
                                 {req.status === 'APPROVED' ? 'APROBADO' : 'PENDIENTE'}
                             </div>

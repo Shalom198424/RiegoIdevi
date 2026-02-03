@@ -76,7 +76,7 @@ export const RequestIrrigationPage = () => {
     }
 
     return (
-        <div className="max-w-md mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="max-w-xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
             <header className="mb-8 flex items-center gap-4">
                 <button
                     onClick={() => navigate(-1)}

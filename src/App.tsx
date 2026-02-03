@@ -10,7 +10,7 @@ import { AdminNetworkPage } from './pages/Admin/AdminNetworkPage';
 import { AdminSettingsPage } from './pages/Admin/AdminSettingsPage';
 import { AdminProfilePage } from './pages/Admin/AdminProfilePage';
 import { AdminDDJJCPage } from './pages/Admin/AdminDDJJCPage';
-import { ProfilePage } from './pages/Profile/ProfilePage';
+import { ProducerProfilePage as ProfilePage } from './pages/Producer/ProducerProfilePage';
 import { RequestIrrigationPage } from './pages/Producer/RequestIrrigationPage';
 
 import { DDJJCPage } from './pages/Producer/DDJJCPage';

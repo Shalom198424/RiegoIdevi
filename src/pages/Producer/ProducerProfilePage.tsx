@@ -20,7 +20,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 
-export const ProfilePage = () => {
+export const ProducerProfilePage = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const userName = localStorage.getItem('userName') || 'Productor';

@@ -56,7 +56,7 @@ export const AdminPage = () => {
         }, 0);
 
     return (
-        <div className="max-w-lg mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
+        <div className="max-w-xl mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
             {/* DDJJC Recent Submissions */}
             {ddjjcs.filter(d => d.status === 'PENDING').length > 0 && (
                 <section className="space-y-4">

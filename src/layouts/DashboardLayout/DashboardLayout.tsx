@@ -79,8 +79,8 @@ export const DashboardLayout = () => {
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-black flex">
             {/* Sidebar Desktop */}
-            <aside className="hidden md:flex flex-col w-64 bg-white border-r border-slate-200 shadow-sm">
-                <div className="p-4 border-b border-slate-100 flex items-center justify-center">
+            <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-[#111] border-r border-slate-200 dark:border-white/5 shadow-sm">
+                <div className="p-4 border-b border-slate-100 dark:border-white/5 flex items-center justify-center">
                     <img src="/assets/logo-idevi.jpg" alt="IDEVI Logo" className="h-16 w-auto object-contain" />
                 </div>
 
@@ -92,23 +92,23 @@ export const DashboardLayout = () => {
                             className={cn(
                                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group",
                                 location.pathname === link.href
-                                    ? "bg-primary-50 text-primary-700 shadow-sm"
-                                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-800"
+                                    ? "bg-primary-50 dark:bg-primary/20 text-primary-700 dark:text-primary shadow-sm"
+                                    : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-800 dark:hover:text-white"
                             )}
                         >
                             <link.icon className={cn(
                                 "w-5 h-5 transition-transform group-hover:scale-110",
-                                location.pathname === link.href ? "text-primary-600" : ""
+                                location.pathname === link.href ? "text-primary-600 dark:text-primary" : ""
                             )} />
                             <span className="font-medium">{link.label}</span>
                         </Link>
                     ))}
                 </nav>
 
-                <div className="p-4 border-t border-slate-100 pt-6">
+                <div className="p-4 border-t border-slate-100 dark:border-white/5 pt-6">
                     <button
                         onClick={() => navigate('/')}
-                        className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-500 hover:bg-red-50 transition-all"
+                        className="flex items-center gap-3 px-4 py-3 w-full rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all"
                     >
                         <LogOut className="w-5 h-5" />
                         <span className="font-medium">Cerrar Sesión</span>
@@ -246,7 +246,7 @@ export const DashboardLayout = () => {
             </main>
 
             {/* Bottom Navigation (Mobile Only) */}
-            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-black border-t border-slate-100 dark:border-white/10 px-6 py-3 flex justify-between items-center z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
+            <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-[#111]/90 backdrop-blur-md border-t border-slate-100 dark:border-white/10 px-6 py-3 flex justify-between items-center z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.03)]">
                 {(isAdmin
                     ? [
                         { label: 'PANEL', icon: LayoutDashboard, path: '/admin', active: location.pathname === '/admin' },
@@ -283,10 +283,10 @@ export const DashboardLayout = () => {
                     onClick={() => setIsSidebarOpen(false)}
                 >
                     <div
-                        className="w-72 bg-white h-full p-6 animate-in slide-in-from-left duration-300"
+                        className="w-72 bg-white dark:bg-[#111] h-full p-6 animate-in slide-in-from-left duration-300 border-r dark:border-white/5"
                         onClick={e => e.stopPropagation()}
                     >
-                        <div className="flex items-center justify-between mb-8">
+                        <div className="flex items-center justify-between mb-8 pb-8 border-b border-slate-100 dark:border-white/5">
                             <div className="flex items-center justify-center">
                                 <img src="/assets/logo-idevi.jpg" alt="IDEVI Logo" className="h-14 w-auto object-contain" />
                             </div>
@@ -305,17 +305,19 @@ export const DashboardLayout = () => {
                                     onClick={() => setIsSidebarOpen(false)}
                                     className={cn(
                                         "flex items-center gap-4 px-4 py-3 rounded-xl",
-                                        location.pathname === link.href ? "bg-primary-50 text-primary-700" : "text-slate-600"
+                                        location.pathname === link.href
+                                            ? "bg-primary-50 dark:bg-primary/20 text-primary-700 dark:text-primary"
+                                            : "text-slate-600 dark:text-slate-400"
                                     )}
                                 >
                                     <link.icon className="w-6 h-6" />
                                     <span className="font-semibold">{link.label}</span>
                                 </Link>
                             ))}
-                            <div className="h-px bg-slate-100 my-4" />
+                            <div className="h-px bg-slate-100 dark:bg-white/5 my-4" />
                             <button
                                 onClick={() => navigate('/')}
-                                className="flex items-center gap-4 px-4 py-3 w-full rounded-xl text-red-500"
+                                className="flex items-center gap-4 px-4 py-3 w-full rounded-xl text-red-500 dark:hover:bg-red-500/10"
                             >
                                 <LogOut className="w-6 h-6" />
                                 <span className="font-semibold">Cerrar Sesión</span>
