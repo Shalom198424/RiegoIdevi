@@ -10,6 +10,7 @@ import {
     ArrowLeft,
     AlertCircle
 } from 'lucide-react';
+import { cn } from '../../utils/cn';
 
 export const RequestIrrigationPage = () => {
     const navigate = useNavigate();
@@ -21,6 +22,12 @@ export const RequestIrrigationPage = () => {
     const [date, setDate] = useState("");
     const [duration, setDuration] = useState("");
     const [flow, setFlow] = useState("");
+
+    const [hasActiveTurn] = useState(() => {
+        const requests = JSON.parse(localStorage.getItem('irrigation_requests') || '[]');
+        const today = new Date().toISOString().split('T')[0];
+        return requests.some((r: any) => r.date === today && r.status === 'APPROVED');
+    });
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -173,11 +180,21 @@ export const RequestIrrigationPage = () => {
                 {/* Submit Button */}
                 <button
                     type="submit"
-                    disabled={loading}
-                    className="w-full h-20 bg-primary text-black rounded-full font-black text-lg flex items-center justify-center gap-4 shadow-xl shadow-primary/20 hover:-translate-y-1 hover:bg-primary-dark active:scale-[0.98] transition-all disabled:opacity-50 disabled:translate-y-0"
+                    disabled={loading || hasActiveTurn}
+                    className={cn(
+                        "w-full h-20 rounded-full font-black text-lg flex items-center justify-center gap-4 shadow-xl transition-all active:scale-[0.98]",
+                        hasActiveTurn
+                            ? "bg-slate-100 dark:bg-white/5 text-slate-400 cursor-not-allowed grayscale"
+                            : "bg-primary text-black shadow-primary/20 hover:-translate-y-1 hover:bg-primary-dark"
+                    )}
                 >
                     {loading ? (
                         <div className="w-6 h-6 border-4 border-black/20 border-t-black rounded-full animate-spin" />
+                    ) : hasActiveTurn ? (
+                        <>
+                            Riego en Curso
+                            <AlertCircle size={24} />
+                        </>
                     ) : (
                         <>
                             Confirmar Solicitud
@@ -185,6 +202,12 @@ export const RequestIrrigationPage = () => {
                         </>
                     )}
                 </button>
+
+                {hasActiveTurn && (
+                    <p className="text-center text-[10px] font-black text-red-500 uppercase tracking-widest animate-pulse">
+                        No puedes realizar una nueva solicitud mientras tengas un turno activo.
+                    </p>
+                )}
             </form>
         </div>
     );

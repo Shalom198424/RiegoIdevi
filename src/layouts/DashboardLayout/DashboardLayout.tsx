@@ -8,7 +8,6 @@ import {
     X,
     Settings,
     User,
-    Calendar,
     Sun,
     Moon,
     ClipboardCheck,
@@ -252,7 +251,6 @@ export const DashboardLayout = () => {
                         { label: 'PANEL', icon: LayoutDashboard, path: '/admin', active: location.pathname === '/admin' },
                         { label: 'DDJJC', icon: ClipboardCheck, path: '/admin/ddjjc', active: location.pathname === '/admin/ddjjc' },
                         { label: 'HISTORIAL', icon: History, path: '/admin/history', active: location.pathname === '/admin/history' },
-                        { label: 'TURNOS', icon: Calendar, path: '/admin/schedule', active: location.pathname === '/admin/schedule' },
                         { label: 'AJUSTES', icon: Settings, path: '/admin/settings', active: location.pathname === '/admin/settings' }
                     ]
                     : [

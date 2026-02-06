@@ -28,13 +28,13 @@ export const ProducerPage = () => {
 
             {/* Live Activity Section */}
             <section className="space-y-5">
-                <h2 className="text-2xl font-black text-slate-800 dark:text-white px-1 tracking-tight">Actividad en Vivo</h2>
+                <h2 className="text-2xl font-black text-slate-800 dark:text-white px-1 tracking-tight text-center">Actividad en Vivo</h2>
 
-                <div className="bg-white dark:bg-[#080808] rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-white/5 shadow-xl shadow-slate-200/50 dark:shadow-none">
+                <div className="bg-white dark:bg-[#080808] rounded-[2.5rem] overflow-hidden border border-slate-100 dark:border-white/5 shadow-xl shadow-slate-200/50 dark:shadow-none transition-all duration-500 max-w-xl mx-auto">
                     {/* Header Image Part */}
-                    <div className="relative h-52 w-full overflow-hidden">
+                    <div className="relative h-56 w-full overflow-hidden">
                         <img
-                            src="https://i.imgur.com/vfQARdW.jpeg"
+                            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop"
                             alt="Field"
                             className="w-full h-full object-cover"
                         />
@@ -50,12 +50,14 @@ export const ProducerPage = () => {
                     <div className="p-7 space-y-7">
                         <div className="space-y-1.5">
                             <p className="text-[11px] font-black text-[#4ade80] uppercase tracking-[0.2em]">TURNO 04 • LOTE NORTE</p>
-                            <h3 className="text-3xl font-black text-slate-900 dark:text-white leading-tight">Riego en curso</h3>
+                            <h3 className="text-4xl font-black text-slate-900 dark:text-white leading-tight">
+                                Riego en curso
+                            </h3>
                         </div>
 
                         <div className="space-y-4">
                             <div className="flex justify-between items-end">
-                                <span className="text-xs font-black text-slate-400 dark:text-gray-500 uppercase tracking-widest">FINALIZACIÓN ESTIMADA</span>
+                                <span className="text-xs font-black text-slate-300 dark:text-gray-600 uppercase tracking-widest">FINALIZACIÓN ESTIMADA</span>
                                 <span className="text-sm font-black text-[#4ade80] tracking-tighter">FALTAN 02:45:00</span>
                             </div>
                             <div className="h-2.5 w-full bg-slate-100 dark:bg-white/5 rounded-full overflow-hidden">
@@ -65,7 +67,7 @@ export const ProducerPage = () => {
 
                         <button
                             onClick={() => navigate('/producer/request')}
-                            className="w-full h-16 bg-[#4ade80] text-black rounded-2xl font-black text-sm flex items-center justify-center gap-3 shadow-lg shadow-[#4ade80]/20 hover:bg-[#22c55e] transition-all active:scale-[0.98]"
+                            className="w-full h-16 rounded-2xl font-black text-sm flex items-center justify-center gap-3 transition-all duration-300 bg-[#4ade80] text-black shadow-lg shadow-[#4ade80]/20 hover:bg-[#22c55e] active:scale-[0.98]"
                         >
                             <Plus size={20} strokeWidth={3} />
                             Solicitar Riego
@@ -96,9 +98,6 @@ export const ProducerPage = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Big Action Button - Shared primary color */}
-
 
             {/* Recent Requests Section */}
             <section className="space-y-5">
