@@ -79,3 +79,18 @@ export interface NetworkStats {
     currentConsumption: string;
     efficiency: string;
 }
+
+// Weather
+export interface WeatherInfo {
+    temp: number;
+    condition: string;
+    description: string;
+    humidity: number;
+    windSpeed: number;
+    icon: string;
+    forecast: Array<{
+        day: string;
+        temp: number;
+        condition: string;
+    }>;
+}

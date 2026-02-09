@@ -17,6 +17,7 @@ import { useState, useEffect } from 'react';
 import { cn } from '../../utils/cn';
 import { dataService } from '../../services/dataService';
 import type { AppNotification } from '../../types';
+import { WeatherWidget } from '../../components/ui/WeatherWidget';
 
 export const DashboardLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -158,6 +159,10 @@ export const DashboardLayout = () => {
                         >
                             {isDark ? <Sun size={20} strokeWidth={2.5} /> : <Moon size={20} strokeWidth={2.5} />}
                         </button>
+
+                        <div className="hidden sm:block">
+                            <WeatherWidget />
+                        </div>
 
                         <div className="relative">
                             <button
